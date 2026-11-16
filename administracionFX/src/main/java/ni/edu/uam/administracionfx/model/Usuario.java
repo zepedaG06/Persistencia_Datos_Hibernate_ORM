@@ -3,18 +3,32 @@ package ni.edu.uam.administracionfx.model;
 import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "usuario")
 @NamedQueries({
         @NamedQuery(
-              name="Usuario.findAll",
-              query="SELECT e FROM Usuario e"
+                name = "Usuario.findAll",
+                query = "SELECT e FROM Usuario e ORDER BY e.primerApellido, e.primerNombre"
         ),
         @NamedQuery(
-              name="Usuario.findById",
-              query = "SELECT e FROM Usuario e WHERE e.id = ?1"
+                name = "Usuario.findById",
+                query = "SELECT e FROM Usuario e WHERE e.id = ?1"
+        ),
+        @NamedQuery(
+                name = "Usuario.findByUsuario",
+                query = "SELECT e FROM Usuario e WHERE lower(e.usuario) = lower(:valor)"
+        ),
+        @NamedQuery(
+                name = "Usuario.findByCorreo",
+                query = "SELECT e FROM Usuario e WHERE lower(e.correo) = lower(:valor)"
+        ),
+        @NamedQuery(
+                name = "Usuario.findByLogin",
+                query = "SELECT e FROM Usuario e "
+                        + "WHERE lower(e.usuario) = lower(:valor) OR lower(e.correo) = lower(:valor)"
         )
 })
 public class Usuario {
@@ -38,6 +52,7 @@ public class Usuario {
     @Column(name = "usuario", nullable = false)
     private String usuario;
 
+    /** Guarda el hash PBKDF2 de la contraseña, nunca el texto plano. */
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -46,6 +61,16 @@ public class Usuario {
 
     @Column(name = "ruta_foto")
     private String rutaFoto;
+
+    @Column(name = "fecha_registro")
+    private LocalDateTime fechaRegistro;
+
+    @PrePersist
+    void antesDeInsertar() {
+        if (fechaRegistro == null) {
+            fechaRegistro = LocalDateTime.now();
+        }
+    }
 
     public UUID getId() {
         return id;
@@ -119,6 +144,32 @@ public class Usuario {
         this.rutaFoto = rutaFoto;
     }
 
+    public LocalDateTime getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(LocalDateTime fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    /** Nombre completo para mostrar en pantalla (no se persiste). */
+    public String getNombreCompleto() {
+        StringBuilder sb = new StringBuilder();
+        for (String parte : new String[]{primerNombre, segundoNombre, primerApellido, segundoApellido}) {
+            if (parte != null && !parte.isBlank()) {
+                if (!sb.isEmpty()) sb.append(' ');
+                sb.append(parte.trim());
+            }
+        }
+        return sb.toString();
+    }
+
+    /** Iniciales para el avatar, p. ej. "JL". */
+    public String getIniciales() {
+        String a = primerNombre == null || primerNombre.isBlank() ? "" : primerNombre.trim().substring(0, 1);
+        String b = primerApellido == null || primerApellido.isBlank() ? "" : primerApellido.trim().substring(0, 1);
+        return (a + b).toUpperCase();
+    }
 
     @Override
     public String toString() {
@@ -129,9 +180,9 @@ public class Usuario {
                 ", primerApellido='" + primerApellido + '\'' +
                 ", segundoApellido='" + segundoApellido + '\'' +
                 ", usuario='" + usuario + '\'' +
-                ", password='" + password + '\'' +
                 ", correo='" + correo + '\'' +
                 ", rutaFoto='" + rutaFoto + '\'' +
+                ", fechaRegistro=" + fechaRegistro +
                 '}';
     }
 }

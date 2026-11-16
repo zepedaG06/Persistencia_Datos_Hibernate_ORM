@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" styleClass="app-root"
+            fx:controller="ni.edu.uam.administracionfx.controller.DashboardController">
+
+    <!-- ============ Barra lateral ============ -->
+    <left>
+        <VBox styleClass="sidebar" spacing="6" prefWidth="240">
+            <padding>
+                <Insets top="24" right="16" bottom="20" left="16"/>
+            </padding>
+
+            <HBox spacing="10" alignment="CENTER_LEFT" styleClass="sidebar-brand">
+                <Label text="UAM" styleClass="brand-logo, brand-logo-sm"/>
+                <Label text="Administración" styleClass="sidebar-title"/>
+            </HBox>
+
+            <Label text="MENÚ" styleClass="sidebar-section"/>
+            <Button text="Usuarios" maxWidth="Infinity" styleClass="nav-item, nav-item-active"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <HBox spacing="10" alignment="CENTER_LEFT" styleClass="user-chip">
+                <Label fx:id="lblAvatar" styleClass="avatar"/>
+                <VBox spacing="2">
+                    <Label fx:id="lblNombreSesion" styleClass="user-chip-name"/>
+                    <Label fx:id="lblUsuarioSesion" styleClass="user-chip-handle"/>
+                </VBox>
+            </HBox>
+            <Button text="Cerrar sesión" maxWidth="Infinity" styleClass="btn-sidebar"
+                    onAction="#onCerrarSesion"/>
+        </VBox>
+    </left>
+
+    <!-- ============ Contenido ============ -->
+    <center>
+        <VBox spacing="20" styleClass="content">
+            <padding>
+                <Insets top="28" right="32" bottom="24" left="32"/>
+            </padding>
+
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <VBox spacing="4">
+                    <Label text="Usuarios" styleClass="h1"/>
+                    <Label fx:id="lblBienvenida" styleClass="muted"/>
+                </VBox>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="+  Nuevo usuario" styleClass="btn-primary" onAction="#onNuevo"/>
+            </HBox>
+
+            <!-- Tarjetas de resumen -->
+            <HBox spacing="16">
+                <VBox styleClass="card, stat-card" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                    <Label text="Total de usuarios" styleClass="stat-label"/>
+                    <Label fx:id="lblTotal" text="—" styleClass="stat-value"/>
+                </VBox>
+                <VBox styleClass="card, stat-card" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                    <Label text="Registrados este mes" styleClass="stat-label"/>
+                    <Label fx:id="lblMes" text="—" styleClass="stat-value, stat-accent"/>
+                </VBox>
+                <VBox styleClass="card, stat-card" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                    <Label text="Mostrando" styleClass="stat-label"/>
+                    <Label fx:id="lblMostrando" text="—" styleClass="stat-value"/>
+                </VBox>
+            </HBox>
+
+            <!-- Tabla -->
+            <VBox styleClass="card, table-card" spacing="14" VBox.vgrow="ALWAYS">
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <TextField fx:id="txtBuscar" promptText="Buscar por nombre, usuario o correo…"
+                               HBox.hgrow="ALWAYS" styleClass="search"/>
+                    <Button fx:id="btnEditar" text="Editar" styleClass="btn-secondary" onAction="#onEditar"/>
+                    <Button fx:id="btnEliminar" text="Eliminar" styleClass="btn-danger-outline"
+                            onAction="#onEliminar"/>
+                    <Button text="Actualizar" styleClass="btn-secondary" onAction="#onRefrescar"/>
+                </HBox>
+
+                <StackPane VBox.vgrow="ALWAYS">
+                    <TableView fx:id="tabla" styleClass="data-table">
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS"/>
+                        </columnResizePolicy>
+                        <columns>
+                            <TableColumn fx:id="colNombre" text="Nombre" prefWidth="290" minWidth="230"/>
+                            <TableColumn fx:id="colUsuario" text="Usuario" prefWidth="140" minWidth="110"/>
+                            <TableColumn fx:id="colCorreo" text="Correo" prefWidth="230" minWidth="170"/>
+                            <TableColumn fx:id="colFecha" text="Registrado" prefWidth="120" minWidth="118" maxWidth="140"/>
+                        </columns>
+                    </TableView>
+                </StackPane>
+
+                <Label fx:id="lblEstado" styleClass="hint"/>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>

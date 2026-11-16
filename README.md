@@ -34,7 +34,7 @@ src/main/resources/ni/edu/uam/administracionfx/
 
 1. Ten PostgreSQL corriendo y crea la base de datos:
    ```sql
-   CREATE DATABASE estudiantes;
+   CREATE DATABASE estudiante;
    ```
 2. Revisa usuario, contraseña y URL en
    `administracionFX/src/main/resources/META-INF/persistence.xml`.

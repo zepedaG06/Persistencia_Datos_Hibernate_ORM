@@ -4,17 +4,32 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
+/**
+ * Crea la EntityManagerFactory la primera vez que se necesita.
+ * Si falla (p. ej. PostgreSQL apagado), se puede volver a intentar
+ * sin reiniciar la aplicación.
+ */
 public class EntityManagerAdmin {
 
-    private static final EntityManagerFactory emf =
-            Persistence.createEntityManagerFactory("default");
+    private static EntityManagerFactory emf;
 
-    public static EntityManager getEntityManager() {
-        return emf.createEntityManager();
+    private static synchronized EntityManagerFactory factory() {
+        if (emf == null || !emf.isOpen()) {
+            try {
+                emf = Persistence.createEntityManagerFactory("default");
+            } catch (RuntimeException ex) {
+                throw new DaoException("No se pudo conectar con la base de datos", ex);
+            }
+        }
+        return emf;
     }
 
-    public static void close() {
-        if (emf.isOpen()) {
+    public static EntityManager getEntityManager() {
+        return factory().createEntityManager();
+    }
+
+    public static synchronized void close() {
+        if (emf != null && emf.isOpen()) {
             emf.close();
         }
     }

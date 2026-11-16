@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<!-- Panel lateral de marca reutilizado en Login y Registro -->
+<VBox xmlns:fx="http://javafx.com/fxml" styleClass="brand-panel" spacing="18"
+      prefWidth="420" minWidth="360" maxWidth="460">
+    <padding>
+        <Insets top="48" right="44" bottom="40" left="44"/>
+    </padding>
+
+    <HBox spacing="12" alignment="CENTER_LEFT">
+        <Label text="UAM" styleClass="brand-logo"/>
+        <Label text="Administración" styleClass="brand-name"/>
+    </HBox>
+
+    <Region VBox.vgrow="ALWAYS"/>
+
+    <Label text="Gestiona los usuarios de tu sistema en un solo lugar."
+           styleClass="brand-title" wrapText="true"/>
+    <Label text="Registro, inicio de sesión y administración completa de cuentas con JavaFX, Hibernate y PostgreSQL."
+           styleClass="brand-subtitle" wrapText="true"/>
+
+    <VBox spacing="10" styleClass="brand-features">
+        <Label text="✓  Contraseñas protegidas con hash PBKDF2" styleClass="brand-feature"/>
+        <Label text="✓  Crear, editar, buscar y eliminar usuarios" styleClass="brand-feature"/>
+        <Label text="✓  Validación de usuario y correo únicos" styleClass="brand-feature"/>
+    </VBox>
+
+    <Region VBox.vgrow="ALWAYS"/>
+
+    <Label text="Universidad Americana · Persistencia de datos" styleClass="brand-footer"/>
+</VBox>

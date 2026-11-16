@@ -52,7 +52,7 @@ public class UsuarioDao implements IUsuarioDao{
             TypedQuery<Usuario> query = em.createNamedQuery("Usuario.findById", Usuario.class);
             query.setParameter(1, UUID.fromString(id));
             Usuario u = query.getSingleResultOrNull();
-            return Optional.of(u);
+            return Optional.ofNullable(u);
         }
         catch (Exception ex) {
             ex.printStackTrace();

@@ -80,8 +80,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>ni.edu.uam.administracionfx/ni.edu.uam.administracionfx.HelloApplication
-                            </mainClass>
+                            <mainClass>ni.edu.uam.administracionfx/ni.edu.uam.administracionfx.MainApplication</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
